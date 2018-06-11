@@ -1,0 +1,16 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    详细信息
+{% endblock %}
+
+{% block page_content %}
+    <h1>用户详情</h1>
+     <div class="form-group">
+    <label for="exampleInputEmail1">邮箱</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" value="{{ current_user.email }}" readonly>
+
+         <label for="exampleInputEmail1">用户名</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" value="{{ current_user.username }}" readonly>
+     </div>
+{% endblock %}

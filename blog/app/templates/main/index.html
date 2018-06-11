@@ -1,0 +1,62 @@
+{% extends 'common/base.html' %}
+{#导入分页宏#}
+{% from 'common/macro.html' import show_pagination %}
+
+{% block title %}
+首页
+{% endblock %}
+
+
+
+{% block page_content %}
+{{ quick_form(form) }}
+
+{#    显示博客内容的方式#}
+    {% for p in posts %}
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{ url_for('static',filename='upload/'+p.user.icon) }}" alt="icon">
+                </a>
+            </div>
+            <div class="media-body">
+                <div style='float:right'>{{ moment(p.timestamp).fromNow() }}</div>
+                <h4 class="media-heading" >{{ p.user.username }}</h4>
+                  <div>
+                {{ p.content }}
+                  </div>
+{% if current_user.is_authenticated %}
+                <div style="cursor: pointer;" url="{{ url_for('posts.collect',pid=p.id) }}" class="collect">收藏</div>
+{% endif %}
+            </div>
+        </div>
+
+    {% endfor %}
+
+{#    分页导航栏#}
+{{ show_pagination(pagination,'main.index') }}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+    <script type="text/javascript">
+        $(function(){
+            $('.collect').click(function(){
+                _this = this
+                {#$(this).attr('url')   当前对象的某某属性#}
+                $.get($(_this).attr('url'),function(data){
+                    $(_this).text(data.status)
+                /*
+                if ($(_this).text()=='收藏'){
+                    $(_this).text('取消收藏')
+                }else{
+                    $(_this).text('收藏')
+                }
+                */
+            })
+        })
+    })
+    </script>
+{% endblock %}
+
